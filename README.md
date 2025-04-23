@@ -90,16 +90,8 @@ Se aparecer a mensagem `select a topic & subscription to continue`, vá até a e
 
 ### 4. Usar com .NET
 
-Para configurar o PubSub no seu projeto .NET, você tem três opções:
+Configure o PubSub no seu projeto .NET através do arquivo launchSettings.json:
 
-#### 4.1. Configurar via Environment Variable
-
-1. **No código (Program.cs ou Startup.cs)**:
-```csharp
-Environment.SetEnvironmentVariable("PUBSUB_EMULATOR_HOST", "localhost:8085");
-```
-
-2. **No arquivo launchSettings.json** (Recomendado):
 ```json
 {
   "profiles": {
@@ -115,42 +107,6 @@ Environment.SetEnvironmentVariable("PUBSUB_EMULATOR_HOST", "localhost:8085");
     }
   }
 }
-```
-
-> **Dica**: A única variável realmente necessária é `PUBSUB_EMULATOR_HOST`, que aponta para o emulador local.
-
-3. **No arquivo appsettings.json**:
-```json
-{
-  "PubSub": {
-    "EmulatorHost": "localhost:8085"
-  }
-}
-```
-
-E no código:
-```csharp
-var pubSubHost = configuration.GetValue<string>("PubSub:EmulatorHost");
-Environment.SetEnvironmentVariable("PUBSUB_EMULATOR_HOST", pubSubHost);
-```
-
-#### 4.2. Configurar via Builder
-
-Alternativamente, configure diretamente no builder do PubSub:
-
-```csharp
-using Google.Cloud.PubSub.V1;
-
-var builder = new PublisherClientBuilder
-{
-    EmulatorDetection = EmulatorDetection.EmulatorOnly
-};
-
-// Ou ao criar o subscriber
-var subscriberBuilder = new SubscriberClientBuilder
-{
-    EmulatorDetection = EmulatorDetection.EmulatorOnly
-};
 ```
 
 > **Importante**: Configure o emulador antes de criar qualquer cliente PubSub.
