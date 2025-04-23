@@ -1,0 +1,24 @@
+version: '3.9'
+
+services:
+  pubsub-emulator:
+    image: google/cloud-sdk:latest
+    container_name: pubsub-emulator
+    entrypoint: ["/bin/bash", "-c", "chmod +x /entrypoint.sh /seed.sh && /entrypoint.sh"]
+    ports:
+      - "8085:8085"
+    volumes:
+      - ./entrypoint.sh:/entrypoint.sh
+      - ./seed.sh:/seed.sh
+    environment:
+      - PUBSUB_PROJECT_ID=local-test-project
+
+  pubsub-ui:
+    image: ghcr.io/neoscript/pubsub-emulator-ui:latest
+    container_name: pubsub-ui
+    ports:
+      - "4200:80"
+    environment:
+      - PUBSUB_EMULATOR_HOST=pubsub-emulator:8085
+    depends_on:
+      - pubsub-emulator
